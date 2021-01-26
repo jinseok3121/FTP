@@ -7,17 +7,10 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include <fcntl.h>
-#include <openssl/evp.h>
-#include <openssl/aes.h>
-#include <openssl/err.h>
-#include <openssl/rsa.h>
-#include <openssl/rand.h>
-#include <openssl/pem.h>
 #include <assert.h>
 
 #include "readnwrite.h"
-#include "enc.h"
-#include "msg.h"
+
 
 #define BUF_SIZE 1024
 #define NAME_SIZE 20

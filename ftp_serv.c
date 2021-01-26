@@ -7,17 +7,9 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include <fcntl.h>
-#include <openssl/evp.h>
-#include <openssl/aes.h>
-#include <openssl/err.h>
-#include <openssl/rsa.h>
-#include <openssl/rand.h>
-#include <openssl/pem.h>
 #include <assert.h>
-
 #include "readnwrite.h"
-#include "enc.h"
-#include "msg.h"
+
 
 #define BUF_SIZE 1024
 #define MAX_CLNT 256
@@ -41,33 +33,6 @@ int main(int argc, char * argv[])
 	struct sockaddr_in clnt_addr;
 	socklen_t clnt_addr_size;
 	pthread_t t_id;
-	//
-	APP_MSG msg_in;
-	APP_MSG msg_out;
-	
-	char plaintext[BUFSIZE + AES_BLOCK_SIZE] = {0x00, };
-	int n;
-	int len;
-	int plaintext_len;
-	int ciphertext_len;
-	int publickey_len;
-	int encryptedkey_len;
-	
-	unsigned char key[AES_KEY_128] = {0x00, };
-	unsigned char iv[AES_KEY_128] = {0x00, };
-	unsigned char buffer[BUFSIZE] = {0x00, };
-	
-	BIO *pb_public = NULL, *pb_private = NULL;
-	BIO *pub = NULL;
-	RSA *rsa_pubkey = NULL, *rsa_privkey = NULL;
-	
-	for(cnt_i = 0; cnt_i < AES_KEY_128; cnt_i++)
-	{
-		iv[cnt_i] = (unsigned char)cnt_i;
-	}
-	
-	//
-	
 	
 	if(argc != 2)
 	{
@@ -92,12 +57,7 @@ int main(int argc, char * argv[])
 	{
 		error_handling("listen() error");
 	}
-	// key generation
-	pb_public = BIO_new_file("public.pem", "r");
-	PEM_read_bio_RSAPublicKey(pb_public, &rsa_pubkey, NULL, NULL);
-	
-	pb_private = BIO_new_file("private.pem", "r");
-	PEM_read_bio_RSAPrivateKey(pb_private, &rsa_privkey, NULL, NULL);
+
 	
 	while(1)
 	{
